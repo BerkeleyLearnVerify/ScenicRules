@@ -486,9 +486,9 @@ def get_instruction():
 if __name__ == "__main__":
     reports = [
         "apple_031522-pdf",
-        "apple_082321-pdf",  # generated
+        "apple_082321-pdf",
         "apple_09292023-pdf",
-        "apple_10232023-pdf",  # generated
+        "apple_10232023-pdf",
         "apple_111121-pdf",
         "apple_120621-pdf",
         "apple_122022-pdf",
@@ -593,9 +593,9 @@ if __name__ == "__main__":
         "waymo_120122-pdf",
         "waymo_120721-pdf",
         "waymo_122920-pdf",
-        "waymo-collision-report-august-12-2019-pdf",  # generated
+        "waymo-collision-report-august-12-2019-pdf",
         "waymo-collision-report-august-13-2019-pdf",
-        "waymo-collision-report-august-9-2019-1-pdf",  # generated
+        "waymo-collision-report-august-9-2019-1-pdf",
         "waymo-collision-report-august-9-2019-2-pdf",
         "waymo-collision-report-december-20-2019-pdf",
         "waymo-collision-report-february-10-2019-pdf",
@@ -647,7 +647,7 @@ if __name__ == "__main__":
         "zoox-collision-report-february-26-2020-2-pdf",
     ]
 
-    report_path = "../../ScenarioNL-CA-AV-Crash/crash_reports/hard/"
+    report_path = "../../ScenarioNL-CA-AV-Crash/crash_reports/hard/" # The scenario descriptions can be downloaded from https://github.com/KE7/ScenarioNL-CA-AV-Crash/
     for report in reports:
         print(f"Processing report: {report}")
         fr = open(report_path + report + ".txt", "r")
