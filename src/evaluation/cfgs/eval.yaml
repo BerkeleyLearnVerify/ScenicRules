@@ -1,0 +1,39 @@
+hydra:
+  run:
+    dir: ./outputs/${now:%Y-%m-%d}/
+  job_logging:
+    handlers:
+      file:
+        class: logging.FileHandler
+        formatter: simple
+        filename: ${hydra:run.dir}/run_evaluation.log #../representative20_eval.log
+agent:
+  type: 'built_in' # 'built_in' or 'metadrive_ppo' or 'ppo_with_built_in'
+scenic:
+  scenario_name: 'crash_waymo'
+  file_path: '../../scenarios/nhtsa_intersection01/nhtsa_intersection01_metadriveppo.scenic'
+  map_file_path: '../../maps/Town04.net.xml'
+  simulator: 'metadrive' # 'newtonian' or 'carla' or 'metadrive'
+  max_steps_per_simulation: 180 # max_steps_per_simulation * 0.02 = the simulation interval
+  max_rejection_sampling_iterations: 2000 # Scenic default is 2000
+  timeout: 40 # in seconds, for each simulation
+  max_retries: 5 # max retries for each simulation
+rulebook:
+  file_path: 'assets/with_vru.graph' # 'assets/with_vru.graph' or 'assets/no_vru.graph'
+  add_reaching_goal_rule: True
+falsification:
+  sampler_type: 'mab' # 'random' or 'halton' or 'ce' (cross-entropy) or 'mab' (multi-armed bandit)
+  active: True # True for 'ce' and 'mab', False for 'random' and 'halton'
+  params:
+    alpha: 0.9
+    thres: 0.0
+    buckets: 5
+    exploration_ratio: 2 # only for 'mab'
+experiment:
+  rng_seed: 1
+  num_seeds: 1
+  num_samples: 30
+visualization:
+  record_simulation: False # True or False
+  ids: ['egoPoly', 'egoLanePoly', 'car1Poly', 'car1LanePoly', 'car2Poly', 'car2LanePoly'] 
+  record_dir: ./outputs/${now:%Y-%m-%d}/
