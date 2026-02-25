@@ -122,13 +122,10 @@ dmypy.json
 *.cproject
 
 # output files
-examples/multi_objective/*.txt
-examples/multi_objective/*/outputs*/
-examples/multi_objective/outputs*/
 
-src/reasonable_crowd/outputs/*
+src/reasonable_crowd/outputs/
 src/evaluation/outputs/
-outputs/*
+outputs/
 format.sh
 
 docs/build/
