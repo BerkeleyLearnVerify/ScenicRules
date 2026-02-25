@@ -122,10 +122,8 @@ dmypy.json
 *.cproject
 
 # output files
-
 src/reasonable_crowd/outputs/
 src/evaluation/outputs/
 outputs/
 format.sh
-
 docs/build/

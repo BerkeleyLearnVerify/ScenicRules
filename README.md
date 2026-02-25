@@ -8,21 +8,17 @@
 [![GitHub last commit](https://img.shields.io/github/last-commit/BerkeleyLearnVerify/ScenicRules)](https://pepy.tech/project/MetaDrive-simulator)
 ![Status](https://img.shields.io/badge/status-active--development-orange)
 
-<!--
 <div style="text-align: center; width:100%; margin: 0 auto; display: inline-block">
 <strong>
 [
 <a href="https://scenicrules.readthedocs.io/en/latest/">Documentation</a>
 |
-<a href="">Website</a>
-|
-<a href="">Paper</a>
+<a href="https://www.arxiv.org/abs/2602.16073">Paper</a>
 ]
 </strong>
 </div>
 
 <br>
--->
 
 **ScenicRules** is an autonomous driving benchmark designed to evaluate systems against complex, multi-objective specifications in diverse driving contexts. It integrates the following key features:
 
@@ -30,7 +26,7 @@
 - **Abstract Scenario Representation**: Leverages the [Scenic](https://scenic-lang.org/) probabilistic programming language to model driving contexts in an expressive, compact, and interpretable manner.
 
 ### Repository Status
-This repository is currently under active development as we organize the codebase and documentation for the official release. Some features and documentation pages may be incomplete. Stay tuned!
+We are actively building out the tutorials and documentation for the repository. Stay tuned!
 
 ### Documentation
 Please refer to our [documentation](https://scenicrules.readthedocs.io/en/latest/) for installation instructions, tutorials, and more details about ScenicRules. 
