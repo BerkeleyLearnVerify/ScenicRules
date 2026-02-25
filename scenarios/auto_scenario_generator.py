@@ -1,5 +1,6 @@
 import json
 import random
+import argparse
 from collections import Counter
 from enum import Enum
 from itertools import permutations, product
@@ -1742,57 +1743,35 @@ def generate_representative_scenario_specs_with_k_center(
 
 
 if __name__ == "__main__":
-    pass
-    # Below are example usages of the functions defined above.
+    parser = argparse.ArgumentParser(description="Scenario Generator")
+    subparsers = parser.add_subparsers(dest="mode", required=True, help="Mode selection: generate_spec or generate_scenarios")
 
-    # Example: Generate representative scenario specs using k-center algorithm and save to a JSONL file
-    #generate_representative_scenario_specs_with_k_center(
-    #   jsonl_filename="common_specs/common_scenarios_20.jsonl",
-    #   num_vehicle_agents=2,
-    #   num_ped_agents=0,
-    #   num_scenarios=100
-    #)
-
-    # Example: Generate random scenario specs and save to a JSONL file
-    # generate_random_scenario_specs(
-    #    jsonl_filename="common_specs/common_scenarios_20.jsonl",
-    #    num_vehicle_agents=2,
-    #    num_ped_agents=0,
-    #    num_scenarios=50
-    # )
-
-    # Example: Generate Scenic programs from a JSONL file containing multiple specs
-    # generate_scenario_from_file('common_specs/common_scenarios_20.jsonl')
-
-    # Example scenario spec
-    # spec = {
-    #    'scenario': 'test.scenic',
-    #    'map': '../../maps/Town05.xodr',
-    #    'ego': {
-    #        'type': AgentType.CAR,
-    #        'maneuver': VehicleManeuver.RIGHT_TURN,
-    #    },
-    #    'agents': {
-    #        'agent1': {
-    #            'type': AgentType.CAR,
-    #            'maneuver': VehicleManeuver.LANE_FOLLOWING,
-    #            'strategy': 'conservative',
-    #            'spatial_relation': SpatialRelation.FASTER_LANE,
-    #        },
-    #        'agent2': {
-    #            'type': AgentType.CAR,
-    #            'maneuver': VehicleManeuver.LANE_FOLLOWING,
-    #            'strategy': 'aggressive',
-    #            'spatial_relation': SpatialRelation.AHEAD_OF,
-    #        },
-    #        'agent3': {
-    #            'type': AgentType.PEDESTRIAN,
-    #            'maneuver': PedestrianManeuver.CROSS_STREET,
-    #            'spatial_relation': PedestrianSpatialRelation.SIDEWALK,
-    #        },
-    #    }
-    # }
-
-    # Example: Check spec and generate scenario
-    # scenario_spec_checker(spec)
-    # scenario_generator(spec)
+    spec_parser = subparsers.add_parser("generate_spec", help="Generate scenario specs")
+    spec_parser.add_argument("-f", "--jsonl_filename", type=str, help="Output JSONL filename for generated specs")
+    spec_parser.add_argument("-v", "--num_vehicle_agents", type=int, default=2, help="Number of vehicle agents in each scenario")
+    spec_parser.add_argument("-p", "--num_ped_agents", type=int, default=0, help="Number of pedestrian agents in each scenario")
+    spec_parser.add_argument("-n", "--num_scenarios", type=int, default=100, help="Number of scenario specs to generate")
+    spec_parser.add_argument("-m", "--method", type=str, choices=["k_center", "random"], default="k_center", help="Method for selecting representative scenarios")
+    
+    scenario_parser = subparsers.add_parser("generate_scenarios", help="Generate scenarios from specs")
+    scenario_parser.add_argument("-f", "--jsonl_filename", type=str, help="Input JSONL filename containing scenario specs")
+    
+    args = parser.parse_args()
+    
+    if args.mode == "generate_spec":
+        if args.method == "k_center":
+            generate_representative_scenario_specs_with_k_center(
+                jsonl_filename=args.jsonl_filename,
+                num_vehicle_agents=args.num_vehicle_agents,
+                num_ped_agents=args.num_ped_agents,
+                num_scenarios=args.num_scenarios
+            )
+        else:
+            generate_random_scenario_specs(
+                jsonl_filename=args.jsonl_filename,
+                num_vehicle_agents=args.num_vehicle_agents,
+                num_ped_agents=args.num_ped_agents,
+                num_scenarios=args.num_scenarios
+            )
+    elif args.mode == "generate_scenarios":
+        generate_scenario_from_file(args.jsonl_filename)
