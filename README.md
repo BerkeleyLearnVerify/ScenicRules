@@ -4,16 +4,16 @@
 [![Documentation](https://app.readthedocs.org/projects/scenicrules/badge/?version=latest)](https://scenicrules.readthedocs.io/en/latest/)
 [![GitHub license](https://img.shields.io/github/license/BerkeleyLearnVerify/ScenicRules
 )](https://github.com/BerkeleyLearnVerify/ScenicRules/blob/main/LICENSE)
-[![GitHub contributors](https://img.shields.io/github/contributors/BerkeleyLearnVerify/ScenicRules)](https://github.com/metadriverse/metadrive/graphs/contributors)
+<!-- [![GitHub contributors](https://img.shields.io/github/contributors/BerkeleyLearnVerify/ScenicRules)](https://github.com/metadriverse/metadrive/graphs/contributors) -->
 [![GitHub last commit](https://img.shields.io/github/last-commit/BerkeleyLearnVerify/ScenicRules)](https://pepy.tech/project/MetaDrive-simulator)
 ![Status](https://img.shields.io/badge/status-active--development-orange)
 
 <div style="text-align: center; width:100%; margin: 0 auto; display: inline-block">
 <strong>
 [
-<a href="https://scenicrules.readthedocs.io/en/latest/">Documentation</a>
-|
 <a href="https://www.arxiv.org/abs/2602.16073">Paper</a>
+|
+<a href="https://scenicrules.readthedocs.io/en/latest/">Documentation</a>
 ]
 </strong>
 </div>
@@ -28,8 +28,23 @@
 ### Repository Status
 We are actively building out the tutorials and documentation for the repository. Stay tuned!
 
+### Installation
+We recommend installing ScenicRules within an isolated Python virtual environment to prevent dependency conflicts. You can create and activate a new virtual environment using `venv` as follows:
+```bash
+python -m venv venv_scenic_rules
+source venv_scenic_rules/bin/activate
+```
+Once your virtual environment is active, clone the repository and install the package in editable mode:
+```bash
+git clone https://github.com/BerkeleyLearnVerify/ScenicRules.git
+cd ScenicRules
+python -m pip install -e .
+```
+
+<!--
 ### Documentation
-Please refer to our [documentation](https://scenicrules.readthedocs.io/en/latest/) for installation instructions, tutorials, and more details about ScenicRules. 
+Please refer to our [documentation](https://scenicrules.readthedocs.io/en/latest/) for installation instructions, tutorials, and more details about ScenicRules.
+-->
 
 ### Authors
 ScenicRules was originally designed and implemented by Kevin Kai-Chun Chang, Ekin Beyazit, Alberto Sangiovanni-Vincentelli, Tichakorn Wongpiromsarn, and Sanjit A. Seshia.
