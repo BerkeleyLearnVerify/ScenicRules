@@ -1,3 +1,4 @@
+import sys
 from google import genai
 
 
@@ -484,199 +485,39 @@ def get_instruction():
 
 
 if __name__ == "__main__":
-    reports = [
-        "apple_031522-pdf",
-        "apple_082321-pdf",
-        "apple_09292023-pdf",
-        "apple_10232023-pdf",
-        "apple_111121-pdf",
-        "apple_120621-pdf",
-        "apple_122022-pdf",
-        "argo_092222-pdf",
-        "aurora-innovation-collision-report-january-14-2020-pdf",
-        "collision-report-zoox-december-20-2019-pdf",
-        "collision-report-zoox-january-8-2020-pdf",
-        "collision-report-zoox-june-11-2019-pdf",
-        "collision-report-zoox-june-19-2019-pdf",
-        "collision-report-zoox-november-22-2019-pdf",
-        "cruise_012922-pdf",
-        "cruise_030623-pdf",
-        "cruise_031522-pdf",
-        "cruise_031823-pdf",
-        "cruise_032223_2-pdf",
-        "cruise_032721-pdf",
-        "cruise_040923-pdf",
-        "cruise_041223-pdf",
-        "cruise_061523-pdf",
-        "cruise_062922-pdf",
-        "cruise_062923-pdf",
-        "cruise_071822-pdf",
-        "cruise_07212023-a-pdf",
-        "cruise_07302023-pdf",
-        "cruise_08082023-pdf",
-        "cruise_081622-pdf",
-        "cruise_090422-pdf",
-        "cruise_090522-pdf",
-        "cruise_092521-pdf",
-        "cruise_111622-pdf",
-        "cruise_12112021-pdf",
-        "cruise_121822-pdf",
-        "cruise_122122-pdf",
-        "cruise-collision-report-december-19-2019-pdf",
-        "cruise-collision-report-october-26-2019-pdf",
-        "cruise-collision-report-october-28-2019-pdf",
-        "cruise_ol316_042522-pdf",
-        "ghostautonomy_08142023-pdf",
-        "gm-cruise-collision-report-april-10-2019-2-pdf",
-        "gm-cruise-collision-report-august-10-2019-pdf",
-        "gm-cruise-collision-report-august-4-2019-pdf",
-        "gm-cruise-collision-report-august-7-2019-pdf",
-        "gm-cruise-collision-report-july-17-2019-pdf",
-        "gm-cruise-collision-report-june-12-2019-pdf",
-        "gm-cruise-collision-report-september-9-2019-pdf",
-        "lyft_041421-pdf",
-        "lyft_120220-pdf",
-        "lyft-collision-report-april-11-2019-pdf",
-        "lyft-collision-report-may-2-2019-pdf",
-        "lyft-collision-report-november-19-2019-pdf",
-        "mercedes-benz_020223-pdf",
-        "mercedes-benz_020923-pdf",
-        "mercedesbenz_042623-pdf",
-        "mercedes-benz_051922-pdf",
-        "mercedes-benz_053023-pdf",
-        "mercedesbenz_08182023-pdf",
-        "pony-ai_021121-pdf",
-        "pony-ai-collision-report-june-26-2019-pdf",
-        "waymo_010122-pdf",
-        "waymo_020122-pdf",
-        "waymo_020622-pdf",
-        "waymo_021721-pdf",
-        "waymo_022822_2-pdf",
-        "waymo_030622-pdf",
-        "waymo_031223-pdf",
-        "waymo_040122-pdf",
-        "waymo_040523-pdf",
-        "waymo_041223-pdf",
-        "waymo_041322-pdf",
-        "waymo_042823-pdf",
-        "waymo_050323-pdf",
-        "waymo_050422-pdf",
-        "waymo_050723-pdf",
-        "waymo_051122-pdf",
-        "waymo_051722-pdf",
-        "waymo_060421-pdf",
-        "waymo_060523-pdf",
-        "waymo_061621-pdf",
-        "waymo_06182023-pdf",
-        "waymo_062923-1-pdf",
-        "waymo_070222_1-pdf",
-        "waymo_070222_2-pdf",
-        "waymo_070322-pdf",
-        "waymo_070823-pdf",
-        "waymo_071421-pdf",
-        "waymo_07212023-pdf",
-        "waymo_081022-pdf",
-        "waymo_08172023-pdf",
-        "waymo_082121-pdf",
-        "waymo_08232023-pdf",
-        "waymo_08242023-pdf",
-        "waymo_091022-pdf",
-        "waymo_091621-pdf",
-        "waymo_091721_2-pdf",
-        "waymo_100121-pdf",
-        "waymo_102121-pdf",
-        "waymo_102721-pdf",
-        "waymo_110621_2-pdf",
-        "waymo_110822-pdf",
-        "waymo_112021-pdf",
-        "waymo_112621-pdf",
-        "waymo_120122-pdf",
-        "waymo_120721-pdf",
-        "waymo_122920-pdf",
-        "waymo-collision-report-august-12-2019-pdf",
-        "waymo-collision-report-august-13-2019-pdf",
-        "waymo-collision-report-august-9-2019-1-pdf",
-        "waymo-collision-report-august-9-2019-2-pdf",
-        "waymo-collision-report-december-20-2019-pdf",
-        "waymo-collision-report-february-10-2019-pdf",
-        "waymo-collision-report-february-14-2020-pdf",
-        "waymo-collision-report-february-26-2019-pdf",
-        "waymo-collision-report-february-26-2020-pdf",
-        "waymo-collision-report-february-6-2019-pdf",
-        "waymo-collision-report-january-26-2019-pdf",
-        "waymo-collision-report-january-7-2020-pdf",
-        "waymo-collision-report-june-16-2019-pdf",
-        "waymo-collision-report-march-10-2020-pdf",
-        "waymo-collision-report-march-26-2019-pdf",
-        "waymo-collision-report-may-29-2019-pdf",
-        "waymo-collision-report-november-4-2019-pdf",
-        "waymo-collision-report-october-14-2019-pdf",
-        "waymo-collision-report-october-16-2019-pdf",
-        "waymo-collision-report-october-18-2019-pdf",
-        "waymo-collision-report-october-28-2019-1-pdf",
-        "waymo-collision-report-september-5-2020-pdf",
-        "waymo_ol316_042422-pdf",
-        "weride_050123-pdf",
-        "weride_062921-pdf",
-        "weride_071621-pdf",
-        "zoo_042222-pdf",
-        "zoox_020723-pdf",
-        "zoox_020823-pdf",
-        "zoox_021121-pdf",
-        "zoox_022323-pdf",
-        "zoox_031821-pdf",
-        "zoox_040622-pdf",
-        "zoox_041123-pdf",
-        "zoox_042822-pdf",
-        "zoox_05112021-pdf",
-        "zoox_052023-pdf",
-        "zoox_060122-2-pdf",
-        "zoox_061122-pdf",
-        "zoox_06182023-pdf",
-        "zoox_070822-pdf",
-        "zoox_071321-pdf",
-        "zoox_08162023-pdf",
-        "zoox_082322-pdf",
-        "zoox_083022-pdf",
-        "zoox_090221-pdf",
-        "zoox_091422-pdf",
-        "zoox_111422-pdf",
-        "zoox_112022-pdf",
-        "zoox_112822-pdf",
-        "zoox-collision-report-february-26-2020-1-pdf",
-        "zoox-collision-report-february-26-2020-2-pdf",
-    ]
+    with open(sys.argv[1], "r") as f:
+        lines = f.readlines()
+        api_key = lines[0].strip()
+        model = lines[1].strip()
+    
+    print(f"Processing report: {sys.argv[2]}")
+    fr = open(sys.argv[2], "r")
+    description = fr.read()
+    description = " ".join(description.split())
+    fr.close()
 
-    report_path = "../../ScenarioNL-CA-AV-Crash/crash_reports/hard/" # The scenario descriptions can be downloaded from https://github.com/KE7/ScenarioNL-CA-AV-Crash/
-    for report in reports:
-        print(f"Processing report: {report}")
-        fr = open(report_path + report + ".txt", "r")
-        description = fr.read()
-        description = " ".join(description.split())
-        fr.close()
+    prompt = ""
+    prompt += get_scenic_description()
+    prompt += get_examples()
+    prompt += "Now, convert the following natural language description into a Scenic program:\n"
+    prompt += description
+    prompt += "\n\n"
+    prompt += get_instruction()
+    # print(prompt)
 
-        prompt = ""
-        prompt += get_scenic_description()
-        prompt += get_examples()
-        prompt += "Now, convert the following natural language description into a Scenic program:\n"
-        prompt += description
-        prompt += "\n\n"
-        prompt += get_instruction()
-        # print(prompt)
+    print("Waiting for response...")
+    client = genai.Client(api_key=api_key)
+    chat = client.chats.create(model=model)
+    response = chat.send_message(prompt)
+    # print(response.text)
 
-        print("Waiting for response...")
-        client = genai.Client(api_key="")  # replace with your gemini API key
-        chat = client.chats.create(model="gemini-2.5-flash")
-        response = chat.send_message(prompt)
-        # print(response.text)
-
-        fw = open("crash_gemini/crash_" + report + "_gemini.scenic", "w")
-        fw.write('"""\n')
-        fw.write(f"TITLE: {report}\n")
-        fw.write(f"DESCRIPTION: {description}\n")
-        fw.write(f"SOURCE: California DMV Crash Reports\n")
-        fw.write(f"GENERATED BY: Gemini-2.5-Flash\n")
-        fw.write('"""\n\n')
-        scenic_program = "\n".join(response.text.splitlines()[1:-1])
-        fw.write(scenic_program)
-        fw.close()
+    fw = open(sys.argv[3], "w")
+    fw.write('"""\n')
+    fw.write(f"TITLE: {sys.argv[2]}\n")
+    fw.write(f"DESCRIPTION: {description}\n")
+    fw.write(f"SOURCE: California DMV Crash Reports\n")
+    fw.write(f"GENERATED BY: {model}\n")
+    fw.write('"""\n\n')
+    scenic_program = "\n".join(response.text.splitlines()[1:-1])
+    fw.write(scenic_program)
+    fw.close()
