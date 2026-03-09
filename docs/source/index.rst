@@ -19,8 +19,8 @@ Table of Contents
    :maxdepth: 2
    :caption: Getting Started with ScenicRules
 
-   installation
    overview
+   installation
    tutorial
 
 .. toctree::
