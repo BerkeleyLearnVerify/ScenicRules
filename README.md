@@ -2,9 +2,9 @@
 
 <!-- [![Test]()]() -->
 [![Documentation](https://app.readthedocs.org/projects/scenicrules/badge/?version=latest)](https://scenicrules.readthedocs.io/en/latest/)
+[![python](https://img.shields.io/badge/python-%20%203.10-green.svg)]()
 [![GitHub license](https://img.shields.io/github/license/BerkeleyLearnVerify/ScenicRules
 )](https://github.com/BerkeleyLearnVerify/ScenicRules/blob/main/LICENSE)
-<!-- [![GitHub contributors](https://img.shields.io/github/contributors/BerkeleyLearnVerify/ScenicRules)](https://github.com/metadriverse/metadrive/graphs/contributors) -->
 [![GitHub last commit](https://img.shields.io/github/last-commit/BerkeleyLearnVerify/ScenicRules)](https://pepy.tech/project/MetaDrive-simulator)
 ![Status](https://img.shields.io/badge/status-active--development-orange)
 
@@ -25,29 +25,12 @@
 - **Multi-Objective Specification**: Supports the formalization of conflicting driving objectives and explicit priority relations using the [Rulebook](https://arxiv.org/abs/1902.09355) framework.
 - **Abstract Scenario Representation**: Leverages the [Scenic](https://scenic-lang.org/) probabilistic programming language to model driving contexts in an expressive, compact, and interpretable manner.
 
+Please see our [paper](https://www.arxiv.org/abs/2602.16073) for more details about the benchmark and its design principles. Please refer to our [documentation](https://scenicrules.readthedocs.io/en/latest/) for installation instructions, tutorials, and more details about ScenicRules.
+
+If you have any questions or suggestions, please feel free to open an issue.
+
 ### Repository Status
-We are actively building out the tutorials and documentation for the repository. Stay tuned!
-
-### Installation
-We recommend installing ScenicRules within an isolated Python virtual environment to prevent dependency conflicts. You can create and activate a new virtual environment using `venv` as follows:
-```bash
-python -m venv venv_scenic_rules
-source venv_scenic_rules/bin/activate
-```
-Once your virtual environment is active, clone the repository and install the package in editable mode:
-```bash
-git clone https://github.com/BerkeleyLearnVerify/ScenicRules.git
-cd ScenicRules
-python -m pip install -e .
-```
-
-<!--
-### Documentation
-Please refer to our [documentation](https://scenicrules.readthedocs.io/en/latest/) for installation instructions, tutorials, and more details about ScenicRules.
--->
-
-### Authors
-ScenicRules was originally designed and implemented by Kevin Kai-Chun Chang, Ekin Beyazit, Alberto Sangiovanni-Vincentelli, Tichakorn Wongpiromsarn, and Sanjit A. Seshia.
+Parts of the documentation and tutorials for ScenicRules are still under development. All the tutorials and documentation are expected to be available by the end of March 2026. In the meantime, we encourage you to explore the codebase and stay tuned for updates!
 
 ### Citing ScenicRules
 

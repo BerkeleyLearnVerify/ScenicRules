@@ -33,6 +33,7 @@ wheels/
 .installed.cfg
 *.egg
 MANIFEST
+.vscode/
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -75,6 +76,7 @@ instance/
 
 # Sphinx documentation
 docs/_build/
+docs/build/
 
 # PyBuilder
 target/
@@ -126,4 +128,3 @@ src/reasonable_crowd/outputs/
 src/evaluation/outputs/
 outputs/
 format.sh
-docs/build/
