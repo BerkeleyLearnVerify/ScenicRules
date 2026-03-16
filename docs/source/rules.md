@@ -8,8 +8,6 @@ Rules
 - Result class
 -->
 
-# Rules (`rulebook.py`)
-
 This module defines the classes and methods used to organize rules, manage their priority, and calculate how well an agent follows them during a simulation.
 
 The `Rule` class acts as the primary method to evaluate ralizations. It stores the logic for a single rule, which includes a name, a unique ID, a `calculate_violation` function, and an `aggregation_method`. When called, the `Rule` executes its violation function using the provided `VariableHandler` and time `step`. Any parameters passed during rule initialization or at runtime are merged and passed to this function. The `Result` class stores the output, tracking the `total_violation` score and a history of violations across the simulation. The `aggregation_method` typically `max` or `sum` determines how the step-by-step scores are combined into the final result.

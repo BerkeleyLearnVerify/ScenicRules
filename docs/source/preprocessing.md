@@ -7,8 +7,6 @@ Preprocessing of Simulation Results
 - bench.scenic
 -->
 
-# Preprocessing of Simulation Results
-
 This document describes the pipeline for collecting trajectory information from Scenic simulations, storing them in relevant data structures, and further processing the trajectories to track each object's occupied lanes throughout the realization.
 
 ## Collection (`bench.scenic`)
