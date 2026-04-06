@@ -60,12 +60,6 @@ def proximity_violation(handler, step, safety_threshold=2.0):
 proximity_violation_rule = Rule(proximity_violation, max, "proximity_violation", 5)
 ```
 
-## Rulebook and Priority
-
-The `Rulebook` class maintains a collection of rules and their relative importance using a directed graph. Each node in the graph represents a set of rules that share the same priority level. Edges between nodes define the priority: an edge from one node to another indicates the first is more important.
-
-You can manage the rulebook by adding rules, creating relations between them using `add_rule_relation`, or removing them. The `add_rule_relation` method supports setting relations such as `LARGER`, `SMALLER`, or `EQUAL` to adjust the priority graph. The `Rulebook` also includes methods to visualize this hierarchy as a graph or print a textual adjacency matrix to show the priority relations between rules.
-
 ## Evaluation and Scoring
 
 The `RuleEngine` iterates through the realization to evaluate all rules. It applies the violation function of each rule at every time step and collects the scores in `Result` objects. 

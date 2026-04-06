@@ -264,11 +264,11 @@ visualization:
 
 ### Detailed Implementation of the Flow
 
-The falsification flow is implemented in [``src/evaluation/run_evaluation.py``](https://github.com/BerkeleyLearnVerify/ScenicRules/blob/main/src/evaluation/run_evaluation.py). The main falsification process is implemented in the `run_evaluation` function.
+The falsification flow is implemented in [``src/evaluation/run_evaluation.py``](https://github.com/BerkeleyLearnVerify/ScenicRules/blob/main/src/evaluation/run_evaluation.py). The main falsification process is implemented in the `run_evaluation` function. The process includes the following steps:
 
-<!--
-- Scenic program
-- Rules / reaching goal rule
-- Falsifier
-- Getting eval results 
-- Metrics>
+1. **Initialization**: The function initializes the simulator, the input parameter space and the falsification sampler, and the Rulebook specification.
+2. **Falsification Loop**: The function enters a loop that iterates for a specified number of samples. In each iteration, it generates a vector of input parameters using the falsification sampler, runs a simulation with these parameters, evaluates the resulting trajectory against the Rulebook specification, and collects the evaluation results. If the sampler is active, it also updates the sampler with the evaluation results to guide the next parameter generation.
+3. **Logging**: The function logs the evaluation results and other relevant information.
+
+#### Falsifier
+We provide several sampling algorithms for the falsifier, including random sampling (`random`), Halton sequence sampling (`halton`), cross-entropy method (`ce`), and multi-armed bandit (`mab`). The samplers are imported from the [VerifAI](https://verifai.readthedocs.io/en/latest/) toolkit or implemented in [``src/rulebook_benchmark/samplers.py``].
