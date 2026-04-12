@@ -6,7 +6,7 @@ Evaluation against Human Preferences
 - Try to describe in a generic way (i.e., not specific to reasonable crowd)
 -->
 
-This section outlines how to evaluate a rulebook's performance by comparing its automated judgments against human preferences, using the **Reasonable Crowd** dataset as a benchmark.
+This section outlines how to evaluate a rulebook's performance by comparing its automated judgments against human preferences, using the [**Reasonable Crowd**](https://github.com/bassam-motional/Reasonable-Crowd) dataset as a benchmark.
 
 ## Overview of Reasonable Crowd
 
