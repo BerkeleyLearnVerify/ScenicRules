@@ -36,7 +36,9 @@ class Rulebook:
         self.priority_graph = nx.DiGraph()
         self.rule_ids = set()
         self.rule_id_to_rule = {}
-        self.rule_name_to_rule_id = {rule.name: rule_id for rule_id, rule in rule_id_to_rule.items()}
+        self.rule_name_to_rule_id = {
+            rule.name: rule_id for rule_id, rule in rule_id_to_rule.items()
+        }
         for rule_id, rule in rule_id_to_rule.items():
             self.rule_id_to_rule[rule_id] = rule.copy()
         self.rule_id_to_node_id = (
@@ -281,7 +283,7 @@ class Rulebook:
             print(f"Rule {rule_id_1} and Rule {rule_id_2} are non-comparable.")
         return Relation.NONCOMPARABLE
 
-    def visualize_rulebook(self, output_file_name="merged_rule_graph.png"):
+    def visualize_rulebook(self, output_file_name="merged_rule_graph.png", save=True):
         ranks = {}
         for node in nx.topological_sort(self.priority_graph):
             preds = list(self.priority_graph.predecessors(node))
@@ -315,7 +317,8 @@ class Rulebook:
             arrows=True,
         )
         plt.title("Rulebook Graph with Same-Level Nodes Merged")
-        plt.savefig(output_file_name)
+        if save:
+            plt.savefig(output_file_name)
         plt.show()
 
     def get_adjecency_list(self):
@@ -696,3 +699,50 @@ class RuleEngine:
                     print(d)
                 pass
         return results
+
+
+if __name__ == "__main__":
+    from rule_functions import (
+        f1,
+        f2,
+        f3,
+        f4,
+        f5,
+        f6,
+        f7,
+        f8,
+        f9,
+        f10,
+        f11,
+        f12,
+        f13,
+        f14,
+        f15,
+    )
+
+    rule_id_to_rule = {
+        1: f1,
+        2: f2,
+        3: f3,
+        4: f4,
+        5: f5,
+        6: f6,
+        7: f7,
+        8: f8,
+        9: f9,
+        10: f10,
+        11: f11,
+        12: f12,
+        13: f13,
+        14: f14,
+        15: f15,
+    }
+    rb = Rulebook(
+        rule_id_to_rule=rule_id_to_rule,
+        rulebook_file="../reasonable_crowd/reasonable_crowd.graph",
+    )
+    rb.print_adjacency_matrix()
+    rb.remove_rule(7)
+    rb.print_adjacency_matrix()
+    rb.add_rule(f7)
+    rb.visualize_rulebook(output_file_name="temp.png")

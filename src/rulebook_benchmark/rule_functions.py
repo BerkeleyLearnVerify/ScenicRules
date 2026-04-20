@@ -78,7 +78,7 @@ def vehicle_ttc(handler, step, threshold=0.8):
     ego_polygon = ego_polygon.convex_hull  # comment/uncomment
     violation = 0
 
-    for state in pool.other_vehicle_states:
+    for state in pool.vehicle_states:
 
         obj_velocity = state.velocity
         obj_polygon = state.polygon

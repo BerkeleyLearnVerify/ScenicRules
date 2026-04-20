@@ -29,3 +29,5 @@ monitor bench():
             obj.trajectory.append(State(obj, np.array([object.position.x, object.position.y]), np.array([object.velocity.x, object.velocity.y]), orient, step))
         step += 1
         wait
+
+

@@ -58,7 +58,7 @@ class ReasonableCrowdTrajectoryParser:
             footprint = state_list[0]["footprint"]
             heading = state_list[0]["heading_radians"]
             position = np.array([state_list[0]["x_meters"], state_list[0]["y_meters"]])
-            footprint_arr = np.array(footprint)
+            #footprint_arr = np.array(footprint)
             # Translate so position is at origin
             translated = footprint - position
 
@@ -75,8 +75,8 @@ class ReasonableCrowdTrajectoryParser:
             base_polygon = shapely.affinity.rotate(
                 polygon, -heading, origin=polygon.centroid, use_radians=True
             )
-            width = base_polygon.bounds[3] - base_polygon.bounds[1]
-            length = base_polygon.bounds[2] - base_polygon.bounds[0]
+            width = base_polygon.bounds[3] - base_polygon.bounds[1] # height is the y dimension, which is the width of the object since we rotated to align with x-axis
+            length = base_polygon.bounds[2] - base_polygon.bounds[0] # width is the x dimension
             dimensions = (length, width)
             object_type = state_list[0]["type"]
             obj_id = state_list[0]["id"]
@@ -135,7 +135,7 @@ class ReasonableCrowdTrajectoryParser:
         self.objects = objects
 
     def create_realization(self):
-        realization = Realization()
+        realization = Realization(isScenic=False)
         realization.objects = self.objects
         return realization
 

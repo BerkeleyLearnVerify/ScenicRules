@@ -432,6 +432,7 @@ def compare_realizations_gif(
 
 def animate_trajectory_with_violations(
     realization,
+    rulebook,
     evaluation_results,
     dpi=100,
     interval=100,
@@ -466,7 +467,7 @@ def animate_trajectory_with_violations(
         Animation object that can be saved or displayed.
     """
     fig, (ax_traj, ax_viol) = plt.subplots(1, 2, figsize=(14, 6), dpi=dpi)
-
+    fig.subplots_adjust(right=0.85)
     colors = {
         "Car": "blue",
         "Truck": "yellow",
@@ -537,8 +538,8 @@ def animate_trajectory_with_violations(
     rule_names = []
     violation_histories = []
 
-    for rule_name, result in evaluation_results.items():
-        rule_names.append(rule_name)
+    for rule_id, result in evaluation_results.items():
+        rule_names.append(rulebook.rule_id_to_rule[rule_id].name)
         # Handle both Result objects and numeric values
         if hasattr(result, "violation_history"):
             violation_histories.append(result.violation_history)
@@ -550,21 +551,19 @@ def animate_trajectory_with_violations(
     max_steps = len(realization)
     violation_lines = []
 
-    # Use matplotx for clean line drawing
-    with matplotx.line_labels():
-        for i, (rule_name, viol_hist) in enumerate(
-            zip(rule_names, violation_histories)
-        ):
-            # Pad violation history to max_steps if needed
-            if len(viol_hist) < max_steps:
-                viol_hist = list(viol_hist) + [viol_hist[-1] if viol_hist else 0] * (
-                    max_steps - len(viol_hist)
-                )
+    # Plot lines first; line_labels API differs across matplotx versions.
+    for i, (rule_name, viol_hist) in enumerate(zip(rule_names, violation_histories)):
+        # Pad violation history to max_steps if needed
+        if len(viol_hist) < max_steps:
+            viol_hist = list(viol_hist) + [viol_hist[-1] if viol_hist else 0] * (
+                max_steps - len(viol_hist)
+            )
 
-            (line,) = ax_viol.plot([], [], label=rule_name, linewidth=2)
-            violation_lines.append((line, viol_hist))
+        (line,) = ax_viol.plot([], [], label=rule_name, linewidth=2)
+        violation_lines.append((line, viol_hist))
 
-        ax_viol.legend(loc="upper left", fontsize=8)
+    label_state = {"use_matplotx": True}
+    line_label_gid = "rule-viol-line-label"
 
     ax_viol.set_xlabel("Time Step", fontsize=10)
     ax_viol.set_ylabel("Violation", fontsize=10)
@@ -593,6 +592,10 @@ def animate_trajectory_with_violations(
         for line, _ in violation_lines:
             line.set_data([], [])
 
+        for txt in list(ax_viol.texts):
+            if txt.get_gid() == line_label_gid:
+                txt.remove()
+
         ret = patches + [ego_lane_patch, ego_arrow[0], lane_arrow[0], ego_buffer, text]
         if show_step:
             step_text.set_text("")
@@ -616,7 +619,9 @@ def animate_trajectory_with_violations(
         lane = getattr(ego, "lane", None)
         if lane is not None:
             ego_lane_patch.set_xy(lane.polygon.exterior.coords[:-1])
-            lane_yaw = lane.orientation.value(ego_pos)
+            lane_yaw = lane.orientation.value(ego_pos) + (
+                np.pi / 2 if realization.isScenic else 0
+            )  # Adjust for Scenic lane orientation if needed
             lane_arrow[0].remove()
             ldx, ldy = 8 * np.cos(lane_yaw), 8 * np.sin(lane_yaw)
             lane_arrow[0] = ax_traj.arrow(
@@ -668,13 +673,29 @@ def animate_trajectory_with_violations(
             line.set_data(x_data, y_data)
 
         # Update x-axis to follow current frame
-        ax_viol.set_xlim(0, max(current_step + 1, 5))
+        #ax_viol.set_xlim(0, max(current_step + 1, 5))
+
+        # Refresh line-end labels after data is available.
+        for txt in list(ax_viol.texts):
+            if txt.get_gid() == line_label_gid:
+                txt.remove()
+
+        if label_state["use_matplotx"]:
+            try:
+                matplotx.line_labels(
+                    ax=ax_viol, gid=line_label_gid, rotation=45, fontsize=8
+                )
+            except Exception:
+                label_state["use_matplotx"] = False
+                if ax_viol.get_legend() is None:
+                    ax_viol.legend(loc="upper left", fontsize=8)
 
         ret = patches + [ego_lane_patch, ego_arrow[0], lane_arrow[0], ego_buffer, text]
         if show_step:
             step_text.set_text(f"Step: {frame}")
             ret.append(step_text)
         ret.extend([line for line, _ in violation_lines])
+        ret.extend([txt for txt in ax_viol.texts if txt.get_gid() == line_label_gid])
 
         return ret
 

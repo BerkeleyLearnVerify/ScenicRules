@@ -224,7 +224,7 @@ def simulate_and_eval(simulator, scenario, realization, rulebook, cfg, idx=0):
     if not simulation:
         log.error("Simulation returned None. Retrying...")
         raise Exception("Simulation returned None.")
-    process_trajectory(realization, isScenic=True)
+    process_trajectory(realization)
 
     ### Evaluate the result ###
     results = get_rule_violations(realization)
