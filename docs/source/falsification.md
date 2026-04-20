@@ -272,3 +272,7 @@ The falsification flow is implemented in [``src/evaluation/run_evaluation.py``](
 
 #### Falsifier
 We provide several sampling algorithms for the falsifier, including random sampling (`random`), Halton sequence sampling (`halton`), cross-entropy method (`ce`), and multi-armed bandit (`mab`). The samplers are imported from the [VerifAI](https://verifai.readthedocs.io/en/latest/) toolkit or implemented in [``src/rulebook_benchmark/samplers.py``].
+
+#### Agent
+We provide three driving policies for evaluation: `built_in`, `metadrive_ppo`, and `ppo_with_built_in`. The `built_in` policy uses the Scenic built-in rule-based policy with PID control. The `metadrive_ppo` policy uses a PPO-trained policy provided by MetaDrive. 
+The `ppo_with_built_in` policy uses the rule-based policy for high-level decision making and the PPO policy for low-level control. To use the `metadrive_ppo` or `ppo_with_built_in` policy, users need to download the PPO policy weights from the [MetaDrive repository](https://github.com/metadriverse/metadrive/blob/main/metadrive/examples/ppo_expert/expert_weights.npz) and place the weights file in the `src/evaluation/assets` folder. To use your own driving policy, you can create a new agent class following the instructions in {ref}`#i-interfacing-with-scenic` and update the `agent.type` field in the configuration file accordingly.
