@@ -271,7 +271,7 @@ The falsification flow is implemented in [``src/evaluation/run_evaluation.py``](
 3. **Logging**: The function logs the evaluation results and other relevant information.
 
 #### Falsifier
-We provide several sampling algorithms for the falsifier, including random sampling (`random`), Halton sequence sampling (`halton`), cross-entropy method (`ce`), and multi-armed bandit (`mab`). The samplers are imported from the [VerifAI](https://verifai.readthedocs.io/en/latest/) toolkit or implemented in [``src/rulebook_benchmark/samplers.py``].
+We provide several sampling algorithms for the falsifier, including random sampling (`random`), Halton sequence sampling (`halton`), cross-entropy method (`ce`), and multi-armed bandit (`mab`). The samplers are imported from the [VerifAI](https://verifai.readthedocs.io/en/latest/) toolkit or implemented in [``src/rulebook_benchmark/samplers.py``](https://github.com/BerkeleyLearnVerify/ScenicRules/blob/main/src/rulebook_benchmark/samplers.py).
 
 #### Agent
 We provide three driving policies for evaluation: `built_in`, `metadrive_ppo`, and `ppo_with_built_in`. The `built_in` policy uses the Scenic built-in rule-based policy with PID control. The `metadrive_ppo` policy uses a PPO-trained policy provided by MetaDrive. 
