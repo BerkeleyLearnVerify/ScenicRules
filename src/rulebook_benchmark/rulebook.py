@@ -47,6 +47,15 @@ class Rulebook:
         if rulebook_file:
             self._parse_rulebook_from_file(rulebook_file)
 
+
+
+    def __str__(self):
+        return (
+            f"Rulebook with {len(self.rule_id_to_rule)} rules, "
+            f"{self.priority_graph.number_of_nodes()} priority nodes, "
+            f"{self.priority_graph.number_of_edges()} relations"
+        )
+
     def copy(self):
         copy_rules = {}
         for rule_id, rule in self.rule_id_to_rule.items():
@@ -527,7 +536,7 @@ class Rulebook:
             violated_rules (list): A list of names of the violated rules.
         """
         if self.verbosity >= 2:
-            print(f"Results:")
+            print("Results:")
             for rule_name, result in results.items():
                 print(f"  {rule_name}: {result.total_violation}")
         error_value = 0
@@ -562,6 +571,15 @@ class Result:
         self.violation_history = []
         self.aggregation_method = aggregation_method
 
+
+
+    def __str__(self):
+        method_name = getattr(self.aggregation_method, "__name__", repr(self.aggregation_method))
+        return (
+            f"Result(total_violation={self.total_violation}, "
+            f"history_len={len(self.violation_history)}, aggregation={method_name})"
+        )
+
     def add(self, violation):
         self.total_violation = self.aggregation_method(
             (self.total_violation, violation)
@@ -578,6 +596,15 @@ class Rule:
         self.parameters = kwargs
         self.name = name
         self.id = rule_id
+
+
+
+    def __str__(self):
+        param_summary = ", ".join(f"{key}={value!r}" for key, value in self.parameters.items())
+        method_name = getattr(self.aggregation_method, "__name__", repr(self.aggregation_method))
+        if param_summary:
+            param_summary = f", params={{ {param_summary} }}"
+        return f"Rule {self.id}: {self.name} (aggregation={method_name}{param_summary})"
 
     def __call__(self, handler, step, **runtime_params):
         # merge init parameters and runtime ones
@@ -634,6 +661,11 @@ class RuleEngine:
     def __init__(self, rule_id_to_rule):
         # rules is a dict: {"rule_name": Rule(...), ...}
         self.rules = rule_id_to_rule
+
+
+    def __str__(self):
+        rule_count = len(self.rules)
+        return f"RuleEngine with {rule_count} rules"
 
     def evaluate(self, handler, start_index=None, end_index=None, **runtime_params):
         realization = handler.realization

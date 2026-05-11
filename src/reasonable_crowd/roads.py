@@ -9,14 +9,28 @@ from scenic.core.object_types import Point
 from scenic.core.vectors import Vector
 from scenic.domains.driving.roads import _toVector
 
-from rulebook_benchmark.utils import angle_between, normalize_vector
+from rulebook_benchmark.utils import angle_between
 
 Vectorlike = Union[Vector, Point, Tuple[numbers.Real, numbers.Real]]
+
+
+def _count(value):
+    return 0 if value is None else len(value)
+
+
+def _element_label(element):
+    if element is None:
+        return None
+    return getattr(element, "name", getattr(element, "uid", element.__class__.__name__))
 
 
 class MultiLinePlaceholder:  # placeholder class for getting the linestring from attributes such as centerline, leftEdge etc
     def __init__(self, linestring):
         self.lineString = linestring
+
+
+    def __str__(self):
+        return f"MultiLinePlaceholder({self.lineString})"
 
 
 class Maneuver:
@@ -26,14 +40,28 @@ class Maneuver:
         self.connectingLane = connectingLane
 
 
+    def __str__(self):
+        connector = f", connecting={_element_label(self.connectingLane)}" if self.connectingLane is not None else ""
+        return f"Maneuver({ _element_label(self.startLane) } -> { _element_label(self.endLane) }{connector})"
+
+
 class OrientationVectorPlaceholder:
     def __init__(self, angle):
         self.yaw = angle  # assuming angle is in radians
 
 
+    def __str__(self):
+        return f"Orientation(yaw={self.yaw})"
+
+
 class ElementOrientation:
     def __init__(self, element):
         self.element = element
+
+
+
+    def __str__(self):
+        return f"Orientation for {_element_label(self.element)}"
 
     def value(self, point):
         if isinstance(self.element, Lane):
@@ -91,6 +119,14 @@ class NetworkElement:
     def orientation(self):
         return ElementOrientation(self)
 
+
+
+    def __str__(self):
+        return (
+            f"{self.__class__.__name__} {self.name} "
+            f"(speedLimit={self.speedLimit}, network_attached={self.network is not None})"
+        )
+
     def __eq__(self, other):
         if not isinstance(other, NetworkElement):
             return NotImplemented
@@ -113,12 +149,25 @@ class LinearElement(NetworkElement):
         self.leftEdge = MultiLinePlaceholder(leftEdge)
         self.rightEdge = MultiLinePlaceholder(rightEdge)
 
+    def __str__(self):
+        return (
+            f"{self.__class__.__name__} {self.name} "
+            f"(centerline={self.centerline}, speedLimit={self.speedLimit})"
+        )
+
 
 class Road(NetworkElement):
     def __init__(self, polygon, name, network=None, speed_limit=None):
         super().__init__(polygon, name, network, speed_limit)
         self.laneGroups = None
         self.lanes = None
+
+
+    def __str__(self):
+        return (
+            f"Road {self.name} "
+            f"({ _count(self.laneGroups) } laneGroups, { _count(self.lanes) } lanes)"
+        )
 
     def laneGroupAt(self, point, reject=False):
         return self.network.findPointIn(point, self.laneGroups, reject)
@@ -145,11 +194,23 @@ class Lane(LinearElement):
         self.road = None
 
 
+
+    def __str__(self):
+        return (
+            f"Lane {self.name} "
+            f"(pred={_element_label(self.predecessor)}, succ={_element_label(self.successor)}, maneuvers={_count(self.maneuvers)})"
+        )
+
+
 class LaneGroup(NetworkElement):
     def __init__(self, polygon, name, network=None, speed_limit=None):
         super().__init__(polygon, name, network, speed_limit)
         self.lanes = None
         self.road = None
+
+
+    def __str__(self):
+        return f"LaneGroup {self.name} (lanes={_count(self.lanes)}, road={_element_label(self.road)})"
 
 
 class Intersection(NetworkElement):
@@ -170,12 +231,28 @@ class Intersection(NetworkElement):
         self.roads = None
 
 
+    def __str__(self):
+        return (
+            f"Intersection {self.name} "
+            f"(incoming={_count(self.incomingLanes)}, outgoing={_count(self.outgoingLanes)}, "
+            f"connecting={_count(self.connectingLanes)})"
+        )
+
+
 class RegionPlaceholder:
     def __init__(self, roads, lanes, intersections):
         self.roads = roads
         self.lanes = lanes
         self.intersections = intersections
         self.__attrs_post_init__()
+
+
+
+    def __str__(self):
+        return (
+            f"RegionPlaceholder with {_count(self.roads)} roads, "
+            f"{_count(self.lanes)} lanes, {_count(self.intersections)} intersections"
+        )
 
     def __attrs_post_init__(self):
         polygon = shapely.Polygon()  # Placeholder for the actual polygon
@@ -202,6 +279,15 @@ class Network:
         self.tolerance = 0
         self.allRoads = roads + connectingRoads
         self.__attrs_post_init__()
+
+
+
+    def __str__(self):
+        return (
+            f"Network with {len(self.elements)} elements, {_count(self.roads)} roads, "
+            f"{_count(self.connectingRoads)} connecting roads, {_count(self.lanes)} lanes, "
+            f"{_count(self.laneGroups)} lane groups, {_count(self.intersections)} intersections"
+        )
 
     def __attrs_post_init__(self):
         for elem in self.elements.values():

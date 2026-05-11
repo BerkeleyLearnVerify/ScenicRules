@@ -11,6 +11,11 @@ from rulebook_benchmark.utils import intersects, polygon_distance
 DELTA = 0.1
 
 
+def _format_array(values):
+    array = np.asarray(values, dtype=float)
+    return tuple(np.round(array, 3).tolist())
+
+
 class Realization:
     """
     A Realization represents a single scenario execution, containing the full trajectories of all objects and the road network.
@@ -29,6 +34,14 @@ class Realization:
 
     def __len__(self):
         return len(self.objects[self.ego_index].trajectory)
+
+    def __str__(self):
+        object_count = len(self.objects) if self.objects is not None else "uninitialized"
+        return (
+            f"Realization with {object_count} objects, ego index {self.ego_index}, "
+            f"delta={self.delta}, proximity_threshold={self.proximity_threshold}, "
+            f"isScenic={self.isScenic}"
+        )
 
     @property
     def ego(self):
@@ -133,6 +146,12 @@ class RealizationObject:
             hw = self.width / 2
             self.base_footprint = np.array([[hl, hw], [hl, -hw], [-hl, -hw], [-hl, hw]])
             self.base_polygon = shapely.Polygon(self.base_footprint)
+
+    def __str__(self):
+        return (
+            f"{self.object_type}#{self.uid} "
+            f"({self.length}m x {self.width}m, trajectory_len={len(self.trajectory)})"
+        )
             
 
     @cached_property
@@ -179,6 +198,15 @@ class State:
         self.lane = None  # to be set in process_trajectory
         self.correct_lanes = []  # to be set in process_trajectory
         self.incorrect_lanes = []  # to be set in process_trajectory
+
+
+
+    def __str__(self):
+        yaw = getattr(self.orientation, "yaw", None)
+        return (
+            f"{self.object.object_type}#{self.uid} step {self.step} "
+            f"pos={_format_array(self.position)} vel={_format_array(self.velocity)} yaw={yaw}"
+        )
 
     @cached_property
     def orientation_trimesh(self):
@@ -254,6 +282,13 @@ class WorldState:
         self.states = states
         self.step = step
 
+
+    def __str__(self):
+        return (
+            f"WorldState at step {self.step} with {len(self.states)} states "
+            f"(ego index {self.ego_index})"
+        )
+
     def __getitem__(self, index):
         if index < 0 or index >= len(self.states):
             raise IndexError(f"Index {index} out of bounds for states list")
@@ -271,7 +306,8 @@ class WorldState:
         return [
             state
             for state in self.other_states
-            if state.object.object_type in ["Car", "Truck"]
+            if state.object.object_type.endswith("Car")
+            or state.object.object_type.endswith("Truck")
         ]
 
     @property
@@ -300,6 +336,13 @@ class VariableHandler:
         self._collision_timeline = {}
         self.vehicle_uids = set(obj.uid for obj in self.realization.other_vehicles)
         self.vru_uids = set(obj.uid for obj in self.realization.vrus)
+
+
+    def __str__(self):
+        return (
+            f"VariableHandler for ego {self.ego.uid} with {len(self.objects)} objects "
+            f"over {self.max_steps} steps"
+        )
 
     def __call__(self, step, **kwargs):
         """Get the VariablePool for a given step, computing it if it hasn't been computed before. The VariablePool will compute and cache all relevant variables for that step when it is initialized."""
@@ -380,6 +423,13 @@ class VariablePool:
         self._distances = {}
         self._lazy_distances = {}
         self.steps_ahead = len(self.realization) if steps_ahead is None else steps_ahead
+
+
+    def __str__(self):
+        return (
+            f"VariablePool at step {self.step} for ego {self.ego.uid} "
+            f"({len(self.vehicle_states)} non-ego vehicles, {len(self.vru_states)} vrus)"
+        )
 
     @cached_property
     def ego_state(self):
